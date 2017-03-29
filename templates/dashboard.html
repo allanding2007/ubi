@@ -1,13 +1,20 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Dashboard</h1>
 <div>
     <li>
-        <a href="#">Dashboard</a>
+        <a href="#" style="font-size: 40px"><i class="glyphicon glyphicon-user"></i>&nbsp;Name</a>
+        <i style="float:right;font-size:40px" class="glyphicon glyphicon-chevron-right"></i>
     </li>
+    <hr style="height:1px;border:none;border-top:1px solid #555555;" />
+    <li>
+        <a href="#" style="font-size: 40px"><i class="glyphicon glyphicon-stats"></i>&nbsp;Profile</a>
+        <i style="float:right;font-size:40px" class="glyphicon glyphicon-chevron-right"></i>
+    </li>
+    <hr style="height:1px;border:none;border-top:1px solid #555555;" />
     <li class="dropdown">
-        <a href="#" class="data-toggle" data-toggle="dropdown">Assets</a>
+        <a href="#" class="data-toggle" data-toggle="dropdown" style="font-size: 40px"><i class="glyphicon glyphicon-cog"></i>&nbsp;Assets</a>
+        <i style="float:right;font-size:40px" class="glyphicon glyphicon-chevron-right"></i>
         <ul class="dropdown-menu">
             <li>
                 <a href="#">AP</a>
@@ -18,21 +25,26 @@
 
         </ul>
     </li>
+    <hr style="height:1px;border:none;border-top:1px solid #555555;" />
     <li class="dropdown">
-        <a href="#" class="data-toggle" data-toggle="dropdown">Ssid</a>
+        <a href="#" class="data-toggle" data-toggle="dropdown" style="font-size: 40px"><i class="glyphicon glyphicon-signal"></i>&nbsp;Ssid</a>
+        <i style="float:right;font-size:40px" class="glyphicon glyphicon-chevron-right"></i>
         <ul class="dropdown-menu">
             <li>
                 <a href="{{ url_for('ssid') }}">ssid</a>
             </li>
         </ul>
     </li>
+    <hr style="height:1px;border:none;border-top:1px solid #555555;" />
     <li class="dropdown">
-        <a href="#" class="data-toggle" data-toggle="dropdown">Statistics</a>
+        <a href="#" class="data-toggle" data-toggle="dropdown" style="font-size: 40px"><i class="glyphicon glyphicon-th-list"></i>&nbsp;Statistics</a>
+        <i style="float:right;font-size:40px" class="glyphicon glyphicon-chevron-right"></i>
         <ul class="dropdown-menu">
             <li>
                 <a href="{{ url_for('device_statistics') }}">Device Statistics</a>
             </li>
         </ul>
     </li>
+    <hr style="height:1px;border:none;border-top:1px solid #555555;" />
 </div>
 {% endblock %}
