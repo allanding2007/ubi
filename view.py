@@ -26,9 +26,19 @@ def get_name():
     return render_template(template_location['login'])
 
 
+@app.route("/user/info/")
+def user_info():
+    return render_template(template_location['user_info'])
+
+
 @app.route("/dashboard/")
 def dashboard():
     return render_template(template_location['dashboard'])
+
+
+@app.route("/overview/")
+def overview():
+    return render_template(template_location['overview'])
 
 
 @app.route("/assets/devices/")
@@ -54,6 +64,11 @@ def edit_ssid():
 @app.route("/statistics/device_statistics/")
 def device_statistics():
     return render_template(template_location['device_statistics'])
+
+
+@app.route("/statistics/device_detail/")
+def device_statistic_detail():
+    return render_template(template_location['device_statistic_detail'])
 
 
 if __name__ == "__main__":

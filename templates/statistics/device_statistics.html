@@ -1,38 +1,42 @@
 {% extends "base.html" %}
+{% block title %}Device Statistics{% endblock%}
+{% block navbar %}
+<div class="navbar navbar-inverse" role="navigation">
+    <div class="container" style="float:left">
+        <div class="navbar-header">
+            <i style="float:right;font-size:40px" class="glyphicon glyphicon-chevron-left"></i>
+        </div>
+        <div class="navbar-collapse collapse">
 
+            <a class="navbar-brand" href="{{ url_for('dashboard') }}">Dashboard</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
 {% block content %}
-<h1>Device Statistics</h1>
 <div>
-    <li>
-        <a href="#">Dashboard</a>
-    </li>
-    <li class="dropdown">
-        <a href="#" class="data-toggle" data-toggle="dropdown">Assets</a>
-        <ul class="dropdown-menu">
-            <li>
-                <a href="#">AP</a>
-            </li>
-            <li>
-                <a href="#">Device</a>
-            </li>
-
-        </ul>
-    </li>
-    <li class="dropdown">
-        <a href="#" class="data-toggle" data-toggle="dropdown">Ssid</a>
-        <ul class="dropdown-menu">
-            <li>
-                <a href="#">ssid</a>
-            </li>
-        </ul>
-    </li>
-    <li class="dropdown">
-        <a href="#" class="data-toggle" data-toggle="dropdown">Statistics</a>
-        <ul class="dropdown-menu">
-            <li>
-                <a href="#">Device Statistics</a>
-            </li>
-        </ul>
-    </li>
+    <table class="table">
+        <caption>Device Statistics</caption>
+        <thead>
+        <tr>
+            <th>Mac Address</th>
+            <th>Usage Data</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>11:22:33:44:55:66</td>
+            <td>257Mb</td>
+        </tr>
+        <tr>
+            <td>11:22:33:44:55:67</td>
+            <td>1Gb</td>
+        </tr>
+        <tr>
+            <td>11:22:33:44:55:68</td>
+            <td>0.9Mb</td>
+        </tr>
+        </tbody>
+    </table>
 </div>
 {% endblock %}
