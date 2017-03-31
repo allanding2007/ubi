@@ -40,6 +40,16 @@ class Device(db.Model):
     def __repr__(self):
         return "<Device {0}>".format(self.mac_address)
 
+    def to_json(self):
+        return {
+            "id": self.id,
+            "mac_address": self.mac_address,
+            "manufacturer": self.manufacturer,
+            "description": self.description,
+            "join_date": self.join_date,
+            "is_activated": self.manufacturer
+        }
+
 
 class SSidConfig(db.Model):
     """
@@ -54,6 +64,14 @@ class SSidConfig(db.Model):
     
     def __repr__(self):
         return "<SSidConfig {0}>".format(self.name)
+
+    def to_json(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "pass_word": self.pass_word,
+            "is_activated": self.is_activated
+        }
 
 
 class UsageRecord(db.Model):

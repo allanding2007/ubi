@@ -1,5 +1,12 @@
 {% extends "base.html" %}
 {% block title %}Devices{% endblock %}
+{% block head %}
+{{ super() }}
+<link rel="shortcut icon" href="" type="image/x-icon">
+<link rel="icon" href="" type="image/x-icon">
+<link rel="stylesheet" type="text/css" href="">
+<link rel="stylesheet" href="/static/css/bootstrap-table.css">
+{% endblock %}
 {% block navbar %}
 <div class="navbar navbar-inverse" role="navigation">
     <div class="container" style="float:left">
@@ -15,32 +22,19 @@
 {% endblock %}
 {% block content %}
 <div>
-    <table class="table">
-        <caption>Devices</caption>
+    <table id="id_table" data-search="true">
         <thead>
         <tr>
-            <th>Mac Address</th>
-            <th>Is actived</th>
+            <th data-field="mac_address">Mac Address</th>
+            <th data-field="is_activated">Is actived</th>
         </tr>
         </thead>
-        <tbody>
-        <tr>
-            <td>11:22:33:44:55:66</td>
-            <td>yes</td>
-        </tr>
-        <tr>
-            <td>11:22:33:44:55:67</td>
-            <td>no</td>
-        </tr>
-        <tr>
-            <td>11:22:33:44:55:68</td>
-            <td>no</td>
-        </tr>
-        <tr>
-            <td>11:22:33:44:55:69</td>
-            <td>no</td>
-        </tr>
-        </tbody>
     </table>
 </div>
+{% endblock %}
+{% block scripts %}
+{{ super() }}
+{{ moment.include_moment() }}
+<script src="/static/js/bootstrap-table.js"></script>
+<script src="/static/js/assets/device.js/"></script>
 {% endblock %}

@@ -1,5 +1,12 @@
 {% extends "base.html" %}
 {% block title%}Ssid{% endblock %}
+{% block head %}
+{{ super() }}
+<link rel="shortcut icon" href="" type="image/x-icon">
+<link rel="icon" href="" type="image/x-icon">
+<link rel="stylesheet" type="text/css" href="">
+<link rel="stylesheet" href="/static/css/bootstrap-table.css">
+{% endblock %}
 {% block navbar %}
 <div class="navbar navbar-inverse" role="navigation">
     <div class="container" style="float:left">
@@ -15,24 +22,19 @@
 {% endblock %}
 {% block content %}
 <div>
-    <table class="table">
-        <caption>Ssids</caption>
+    <table id="id_table" data-search="true">
         <thead>
         <tr>
-            <th>Name</th>
-            <th>Is Actived</th>
+            <th data-field="name">Name</th>
+            <th data-field="is_activated">Is Actived</th>
         </tr>
         </thead>
-        <tbody>
-        <tr>
-            <td>CMCC</td>
-            <td>yes</td>
-        </tr>
-        <tr>
-            <td>WX_xx</td>
-            <td>no</td>
-        </tr>
-        </tbody>
     </table>
 </div>
+{% endblock %}
+{% block scripts %}
+{{ super() }}
+{{ moment.include_moment() }}
+<script src="/static/js/bootstrap-table.js"></script>
+<script src="/static/js/ssids/ssids.js"></script>
 {% endblock %}
