@@ -1,38 +1,40 @@
 {% extends "base.html" %}
+{% block title%}Ssid{% endblock %}
+{% block head %}
+{{ super() }}
+<link rel="shortcut icon" href="" type="image/x-icon">
+<link rel="icon" href="" type="image/x-icon">
+<link rel="stylesheet" type="text/css" href="">
+<link rel="stylesheet" href="/static/css/bootstrap-table.css">
+{% endblock %}
+{% block navbar %}
+<div class="navbar navbar-inverse" role="navigation">
+    <div class="container" style="float:left">
+        <div class="navbar-header">
+            <i style="float:right;font-size:40px" class="glyphicon glyphicon-chevron-left"></i>
+        </div>
+        <div class="navbar-collapse collapse">
 
-{% block content %}
-<h1>Ssid</h1>
-<div>
-    <li>
-        <a href="#">Dashboard</a>
-    </li>
-    <li class="dropdown">
-        <a href="#" class="data-toggle" data-toggle="dropdown">Assets</a>
-        <ul class="dropdown-menu">
-            <li>
-                <a href="#">AP</a>
-            </li>
-            <li>
-                <a href="#">Device</a>
-            </li>
-
-        </ul>
-    </li>
-    <li class="dropdown">
-        <a href="#" class="data-toggle" data-toggle="dropdown">Ssid</a>
-        <ul class="dropdown-menu">
-            <li>
-                <a href="#">ssid</a>
-            </li>
-        </ul>
-    </li>
-    <li class="dropdown">
-        <a href="#" class="data-toggle" data-toggle="dropdown">Statistics</a>
-        <ul class="dropdown-menu">
-            <li>
-                <a href="#">Device Statistics</a>
-            </li>
-        </ul>
-    </li>
+            <a class="navbar-brand" href="{{ url_for('dashboard') }}">Dashboard</a>
+        </div>
+    </div>
 </div>
+{% endblock %}
+{% block content %}
+<div>
+    <table id="id_table" data-search="true">
+        <thead>
+        <tr>
+            <th data-field="name">Name</th>
+            <th data-field="is_activated">Is Actived</th>
+        </tr>
+        </thead>
+    </table>
+</div>
+{% endblock %}
+{% block scripts %}
+{{ super() }}
+{{ moment.include_moment() }}
+<script src="/static/js/bootstrap-table.js"></script>
+<script src="/static/js/ssids/ssids.js"></script>
 {% endblock %}

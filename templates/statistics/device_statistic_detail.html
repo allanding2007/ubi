@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}Edit Ssid{% endblock %}
+{% block title %}Device Statistic Detail{% endblock%}
 {% block navbar %}
 <div class="navbar navbar-inverse" role="navigation">
     <div class="container" style="float:left">
@@ -8,13 +8,13 @@
         </div>
         <div class="navbar-collapse collapse">
 
-            <a class="navbar-brand" href="{{ url_for('ssid') }}">Ssids</a>
+            <a class="navbar-brand" href="{{ url_for('device_statistics') }}">Device Statistics</a>
         </div>
     </div>
 </div>
 {% endblock %}
 {% block content %}
-<h1>Edit Ssid</h1>
-<h2>{{ ssid.name }}</h2>
-<h2>{{ ssid.is_activated }}</h2>
+<div>
+    <h2>Device Statistic Detail</h2>
+</div>
 {% endblock %}

@@ -1,38 +1,40 @@
 {% extends "base.html" %}
-
+{% block title %}Dashboard{%  endblock %}
+{% block navbar %}
+<div class="navbar navbar-inverse" role="navigation">
+    <div class="container" style="float:right">
+        <div class="navbar-brand">
+            Menu
+        </div>
+    </div>
+</div>
+{% endblock %}
 {% block content %}
-<h1>Dashboard</h1>
 <div>
     <li>
-        <a href="#">Dashboard</a>
+        <a href="{{ url_for('user_info')}}" style="font-size: 40px"><i class="glyphicon glyphicon-user"></i>&nbsp;Name</a>
+        <i style="float:right;font-size:40px" class="glyphicon glyphicon-chevron-right"></i>
     </li>
+    <hr style="height:1px;border:none;border-top:1px solid #555555;" />
+    <li>
+        <a href="{{url_for('overview')}}" style="font-size: 40px"><i class="glyphicon glyphicon-stats"></i>&nbsp;Overview</a>
+        <i style="float:right;font-size:40px" class="glyphicon glyphicon-chevron-right"></i>
+    </li>
+    <hr style="height:1px;border:none;border-top:1px solid #555555;" />
     <li class="dropdown">
-        <a href="#" class="data-toggle" data-toggle="dropdown">Assets</a>
-        <ul class="dropdown-menu">
-            <li>
-                <a href="#">AP</a>
-            </li>
-            <li>
-                <a href="{{ url_for('devices') }}">Device</a>
-            </li>
-
-        </ul>
+        <a href="{{ url_for('devices') }}" style="font-size: 40px"><i class="glyphicon glyphicon-cog"></i>&nbsp;Assets</a>
+        <i style="float:right;font-size:40px" class="glyphicon glyphicon-chevron-right"></i>
     </li>
+    <hr style="height:1px;border:none;border-top:1px solid #555555;" />
     <li class="dropdown">
-        <a href="#" class="data-toggle" data-toggle="dropdown">Ssid</a>
-        <ul class="dropdown-menu">
-            <li>
-                <a href="{{ url_for('ssid') }}">ssid</a>
-            </li>
-        </ul>
+        <a href="{{ url_for('ssid') }}" style="font-size: 40px"><i class="glyphicon glyphicon-signal"></i>&nbsp;Ssid</a>
+        <i style="float:right;font-size:40px" class="glyphicon glyphicon-chevron-right"></i>
     </li>
+    <hr style="height:1px;border:none;border-top:1px solid #555555;" />
     <li class="dropdown">
-        <a href="#" class="data-toggle" data-toggle="dropdown">Statistics</a>
-        <ul class="dropdown-menu">
-            <li>
-                <a href="{{ url_for('device_statistics') }}">Device Statistics</a>
-            </li>
-        </ul>
+        <a href="{{ url_for('device_statistics') }}" style="font-size: 40px"><i class="glyphicon glyphicon-th-list"></i>&nbsp;Statistics</a>
+        <i style="float:right;font-size:40px" class="glyphicon glyphicon-chevron-right"></i>
     </li>
+    <hr style="height:1px;border:none;border-top:1px solid #555555;" />
 </div>
 {% endblock %}
