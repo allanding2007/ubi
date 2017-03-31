@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Device Statistic Detail{% endblock%}
+{% block navbar %}
+<div class="navbar navbar-inverse" role="navigation">
+    <div class="container" style="float:left">
+        <div class="navbar-header">
+            <i style="float:right;font-size:40px" class="glyphicon glyphicon-chevron-left"></i>
+        </div>
+        <div class="navbar-collapse collapse">
+
+            <a class="navbar-brand" href="{{ url_for('device_statistics') }}">Device Statistics</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block content %}
+<div>
+    <h2>Device Statistic Detail</h2>
+</div>
+{% endblock %}

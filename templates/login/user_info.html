@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}User Information{% endblock %}
+{% block navbar %}
+<div class="navbar navbar-inverse" role="navigation">
+    <div class="container" style="float:left">
+        <div class="navbar-header">
+            <i style="float:right;font-size:40px" class="glyphicon glyphicon-chevron-left"></i>
+        </div>
+        <div class="navbar-collapse collapse">
+
+            <a class="navbar-brand" href="{{ url_for('dashboard') }}">Dashboard</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block content %}
+<div>
+	<div>
+		<i style="font-size:40px">Personal Picture</i>
+		<img src="/static/images/test.jpg" class="img-rounded" height="180" width="150"  align="right">
+	</div>
+
+	<div>
+		<hr style="height:1px;border:none;border-top:1px solid #555555;" />
+		<i style="font-size:40px">Name</i>
+	</div>
+</div>
+{% endblock %}

@@ -14,5 +14,6 @@ template_location = {
     "edit_ssid": "ssids/edit_ssid.html",
     "device_statistics": "statistics/device_statistics.html",
     "device_statistic_detail": "statistics/device_statistic_detail.html",
-    "overview": "overview.html"
+    "overview": "overview.html",
+    "404": "error/404.html"
 }
