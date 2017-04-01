@@ -54,9 +54,9 @@ def user_login():
     return render_template(template_location['login'], form=form)
 
 
-@app.route("/user/info/")
-def user_info():
-    return render_template(template_location['user_info'])
+@app.route("/user/profile/")
+def profile():
+    return render_template(template_location['profile'])
 
 
 @app.route("/dashboard/")
@@ -98,9 +98,9 @@ def device_statistics():
     return render_template(template_location['device_statistics'])
 
 
-@app.route("/statistics/device_detail/")
-def device_statistic_detail():
-    return render_template(template_location['device_statistic_detail'])
+@app.route("/statistics/device_detail/<int:device_id>")
+def device_statistic_detail(device_id):
+    return render_template(template_location['device_statistic_detail'], device_id=device_id)
 
 
 @app.route("/assets/devices/ajax/")
@@ -113,6 +113,48 @@ def devices_ajax():
 def ssids_ajax():
     ssids = SSidConfig.query.all()
     return jsonify(map(lambda ssid: ssid.to_json(), ssids))
+
+
+@app.route("/statistics/devices/ajax/")
+def device_statistics_ajax():
+    devices = UsageRecord.query.all()
+    result = db.session.query(UsageRecord.device_id, db.func.count(UsageRecord.id),
+                              db.func.sum(UsageRecord.data_usage)).group_by(UsageRecord.device_id).all()
+    try:
+        data = {
+            "data": map(lambda r: {"device_id": r[0],
+                                   "count": r[1],
+                                   "usage": r[2],
+                                   "mac_address": Device.query.get(r[0]).mac_address},
+                        result),
+            "code": "1"
+        }
+    except Exception as e:
+        msg = "Get statistics msg error: {0}".format(e)
+        print msg
+        data = {
+            "code": "0",
+            "msg": msg
+        }
+
+    return jsonify(data)
+
+
+@app.route("/statistic/per/device/ajax/<int:device_id>")
+def per_device_statistic_ajax(device_id):
+    records = UsageRecord.query.filter_by(device_id=device_id).all()
+    if not records:
+        data = {
+            "code": "0",
+            "msg": "No records"
+        }
+    else:
+        data = {
+            "code": "1",
+            "data": map(lambda r: r.to_json(), records)
+        }
+
+    return jsonify(data)
 
 
 if __name__ == "__main__":

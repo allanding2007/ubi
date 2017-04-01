@@ -89,3 +89,12 @@ class UsageRecord(db.Model):
     def __repr__(self):
         return "<UsageRecord {0}>".format(self.mac_address)
 
+    def to_json(self):
+        return {
+            "device_id": self.device_id,
+            "id": self.id,
+            "data_usage":self.data_usage,
+            "begin_date": self.begin_date,
+            "end_date": self.end_date
+        }
+
