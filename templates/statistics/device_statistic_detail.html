@@ -1,5 +1,9 @@
 {% extends "base.html" %}
 {% block title %}Device Statistic Detail{% endblock%}
+{% block head %}
+{{ super() }}
+<link rel="stylesheet" href="/static/css/bootstrap-table.css">
+{% endblock %}
 {% block navbar %}
 <div class="navbar navbar-inverse" role="navigation">
     <div class="container" style="float:left">
@@ -15,6 +19,23 @@
 {% endblock %}
 {% block content %}
 <div>
-    <h2>Device Statistic Detail</h2>
+    <table id="id_table" data-search="true">
+        <thead>
+        <tr>
+            <th data-field="begin_date">Begin Time</th>
+            <th data-field="end_date">End Time</th>
+            <th data-field="data_usage">Usage Data</th>
+        </tr>
+        </thead>
+    </table>
 </div>
+{% endblock %}
+{% block scripts %}
+{{ super() }}
+{{ moment.include_moment() }}
+<script>
+    var device_id = '{{ device_id }}';
+</script>
+<script src="/static/js/bootstrap-table.js"></script>
+<script src="/static/js/statistics/per_device.js"></script>
 {% endblock %}
