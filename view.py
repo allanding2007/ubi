@@ -7,10 +7,9 @@ from flask import jsonify
 from flask_bootstrap import Bootstrap
 from flask_moment import Moment
 from template import template_location
-from forms.form import LoginForm
+from forms.form import LoginForm, DeviceForm, SsidForm
 from models.model import db, User, Device, SSidConfig, UsageRecord
 from settings import app_config
-import json
 
 
 app = Flask(__name__)
@@ -74,12 +73,28 @@ def devices():
     return render_template(template_location['devices'])
 
 
-@app.route("/assets/device/edit/<int:id>")
+@app.route("/assets/device/edit/<int:id>", methods=["GET", "POST"])
 def edit_device(id):
     device = Device.query.filter_by(id=id).first()
     if not device:
         abort(404)
-    return render_template(template_location['edit_device'], device=device)
+    form = DeviceForm(mac_address=device.mac_address, manufacturer=device.manufacturer,
+                      is_activated=device.is_activated, join_date=device.join_date,
+                      description=device.description)
+
+    print form.data
+    if form.validate_on_submit():
+        device.mac_address = form.mac_address.data
+        device.manufacturer = form.manufacturer.data
+        device.is_activated = form.is_activated.data
+        device.join_date = form.join_date.data
+        device.description = form.description.data
+        try:
+            db.session.commit()
+            print "updating device: {0}".format(device.mac_address)
+        except Exception as e:
+            print "Error: {0}".format(e)
+    return render_template(template_location['edit_device'], form=form)
 
 
 @app.route("/ssids/ssid/")
@@ -87,10 +102,21 @@ def ssid():
     return render_template(template_location['ssid'])
 
 
-@app.route("/ssids/ssid/edit/<int:id>")
+@app.route("/ssids/ssid/edit/<int:id>", methods=["GET", "POST"])
 def edit_ssid(id):
     ssid = SSidConfig.query.filter_by(id=id).first()
-    return render_template(template_location['edit_ssid'], ssid=ssid)
+    form = SsidForm(name=ssid.name, pass_word=ssid.pass_word, is_activated=ssid.is_activated)
+    print form.data
+    if form.validate_on_submit():
+        ssid.name = form.name.data
+        ssid.pass_word = form.pass_word.data
+        ssid.is_activated = form.is_activated.data
+        try:
+            db.session.commit()
+            print "Updating ssid: {0}".format(ssid.name)
+        except Exception as e:
+            print "Update ssid error: {0}".format(e)
+    return render_template(template_location['edit_ssid'], ssid=ssid, form=form)
 
 
 @app.route("/statistics/device_statistics/")
