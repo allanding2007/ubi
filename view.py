@@ -7,7 +7,7 @@ from flask import jsonify
 from flask_bootstrap import Bootstrap
 from flask_moment import Moment
 from template import template_location
-from forms.form import LoginForm, DeviceForm, SsidForm
+from forms.form import LoginForm, DeviceForm, SsidForm, ProfileForm
 from models.model import db, User, Device, SSidConfig, UsageRecord
 from settings import app_config
 
@@ -55,7 +55,10 @@ def user_login():
 
 @app.route("/user/profile/")
 def profile():
-    return render_template(template_location['profile'])
+    user = User.query.first()
+    form = ProfileForm(user_name=user.user_name, email=user.email, join_date=user.join_date)
+    print form.data
+    return render_template(template_location['profile'], form=form)
 
 
 @app.route("/dashboard/")

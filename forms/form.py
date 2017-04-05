@@ -41,4 +41,11 @@ class SsidForm(FlaskForm):
     submit = SubmitField("Save")
 
 
+class ProfileForm(FlaskForm):
+    """
+    Description: This form is userd for user profile.
+    """
+    user_name = StringField("User Name:", validators=[DataRequired()])
+    email = StringField("E-mail:", validators=[DataRequired()])
+    join_date = DateTimeField("Join Date:")
 
