@@ -132,7 +132,27 @@ def edit_device(id):
             db.session.commit()
             print "updating device: {0}".format(device.mac_address)
         except Exception as e:
-            print "Error: {0}".format(e)
+            print "Edit device error: {0}".format(e)
+        return redirect(url_for("devices"))
+    return render_template(template_location['edit_device'], form=form)
+
+
+@app.route("/assets/device/add/", methods=["GET", "POST"])
+def add_device():
+    form = DeviceForm()
+    if form.validate_on_submit():
+        device = Device(user_id=current_user.id)
+        device.mac_address = form.mac_address.data
+        device.manufacturer = form.manufacturer.data
+        device.is_activated = form.is_activated.data
+        device.join_date = form.join_date.data
+        device.description = form.description.data
+        try:
+            db.session.add(device)
+            db.session.commit()
+        except Exception as e:
+            print "Add device error: {0}".format(e)
+        return redirect(url_for("devices"))
     return render_template(template_location['edit_device'], form=form)
 
 

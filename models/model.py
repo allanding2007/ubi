@@ -4,6 +4,7 @@
 """
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
+from werkzeug.security import generate_password_hash, check_password_hash
 
 db = SQLAlchemy()
 UBI_TABLE_PREFIX = "ubiwifi_"
@@ -24,10 +25,19 @@ class User(UserMixin, db.Model):
     def __repr__(self):
         return "<User {0}>".format(self.user_name)
 
-    def verify_password(self, pwd):
-        if self.pass_word == pwd:
+    def verify_password(self, password):
+        #return check_password_hash(self.pass_word, password)
+        if self.pass_word == password:
             return True
         return False
+
+    @property
+    def password(self):
+        raise AttributeError("password is not a readable attribute.")
+
+    @password.setter
+    def password(self, password):
+        self.pass_word = generate_password_hash(password)
 
 
 class Device(db.Model):
