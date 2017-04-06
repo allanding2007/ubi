@@ -53,7 +53,7 @@ class Device(db.Model):
             "manufacturer": self.manufacturer,
             "description": self.description,
             "join_date": self.join_date,
-            "is_activated": self.manufacturer
+            "is_activated": self.is_activated
         }
 
 

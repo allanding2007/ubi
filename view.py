@@ -172,6 +172,26 @@ def device_statistic_detail(device_id):
     return render_template(template_location['device_statistic_detail'], device_id=device_id)
 
 
+@app.route("/devices/device/delete/<int:id>", methods=["GET", "POST"])
+@login_required
+def delete_device(id):
+    device = get_or_404(Device, int(id))
+
+    data = dict()
+    data['msg'] = "success"
+    try:
+        db.session.delete(device)
+        db.session.commit()
+        data['code'] = "1"
+    except Exception as e:
+        msg = "Delete device error: {0}".format(e)
+        print msg
+        data['code'] = "0"
+        data['msg'] = msg
+
+    return jsonify(data)
+
+
 @app.route("/assets/devices/ajax/")
 @login_required
 def devices_ajax():
