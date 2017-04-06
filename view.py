@@ -12,13 +12,20 @@ from models.model import db, User, Device, SSidConfig, UsageRecord
 from settings import app_config
 
 
-app = Flask(__name__)
 bootstrap = Bootstrap()
 moment = Moment()
-app.config.from_object(app_config['develop'])
-db.init_app(app)
-bootstrap.init_app(app)
-moment.init_app(app)
+
+
+def create_app(app_config):
+    app = Flask(__name__)
+    app.config.from_object(app_config['develop'])
+    db.init_app(app)
+    bootstrap.init_app(app)
+    moment.init_app(app)
+    return app
+
+
+app = create_app(app_config)
 
 
 @app.errorhandler(404)
@@ -188,3 +195,4 @@ def per_device_statistic_ajax(device_id):
 
 if __name__ == "__main__":
     app.run(debug=True)
+
