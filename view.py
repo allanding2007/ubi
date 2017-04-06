@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
     File Name: view.py
     Created On: 2017/03/21
@@ -5,6 +6,7 @@
 from flask import Flask, render_template, make_response, redirect, url_for, flash, abort
 from flask import jsonify
 from flask_bootstrap import Bootstrap
+from flask_login import LoginManager, login_required, login_user, logout_user, current_user
 from flask_moment import Moment
 from template import template_location
 from forms.form import LoginForm, DeviceForm, SsidForm, ProfileForm
@@ -14,6 +16,8 @@ from settings import app_config
 
 bootstrap = Bootstrap()
 moment = Moment()
+login_manager = LoginManager()
+login_manager.session_protection = "strong"
 
 
 def create_app(app_config):
@@ -22,6 +26,7 @@ def create_app(app_config):
     db.init_app(app)
     bootstrap.init_app(app)
     moment.init_app(app)
+    login_manager.init_app(app)
     return app
 
 
@@ -38,52 +43,77 @@ def internal_server_error(e):
     return render_template(template_location['500']), 500
 
 
+def get_or_404(model, indent):
+    obj = model.query.get(indent)
+    if not obj:
+        abort(404)
+    return obj
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    return get_or_404(User, int(user_id))
+
+
 @app.route("/")
+@login_required
 def index():
     return render_template("index.html")
 
 
-@app.route("/login/", methods=["GET", "POST"])
+@app.route("/auth/login/", methods=["GET", "POST"])
 def user_login():
     form = LoginForm()
     print form.data
     if form.validate_on_submit():
         user_name = form.name.data
         user = User.query.filter_by(user_name=user_name).first()
-        if not user:
-            abort(404)
         pwd = form.password.data
-        if pwd == user.pass_word:
+        if user and user.verify_password(pwd):
+            login_user(user, form.remember_me)
             return redirect(url_for('dashboard'))
         else:
             flash("Invliad username or password!")
     return render_template(template_location['login'], form=form)
 
 
+@app.route("/auth/logout/")
+@login_required
+def user_logout():
+    logout_user()
+    flash("You had been logged out!")
+    return redirect(url_for("user_login"))
+
+
 @app.route("/user/profile/")
+@login_required
 def profile():
-    user = User.query.first()
+    user = current_user
     form = ProfileForm(user_name=user.user_name, email=user.email, join_date=user.join_date)
     print form.data
     return render_template(template_location['profile'], form=form)
 
 
 @app.route("/dashboard/")
+@login_required
 def dashboard():
     return render_template(template_location['dashboard'])
 
 
 @app.route("/overview/")
+@login_required
 def overview():
     return render_template(template_location['overview'])
 
 
 @app.route("/assets/devices/")
+@login_required
 def devices():
     return render_template(template_location['devices'])
 
 
 @app.route("/assets/device/edit/<int:id>", methods=["GET", "POST"])
+@login_required
 def edit_device(id):
     device = Device.query.filter_by(id=id).first()
     if not device:
@@ -108,11 +138,13 @@ def edit_device(id):
 
 
 @app.route("/ssids/ssid/")
+@login_required
 def ssid():
     return render_template(template_location['ssid'])
 
 
 @app.route("/ssids/ssid/edit/<int:id>", methods=["GET", "POST"])
+@login_required
 def edit_ssid(id):
     ssid = SSidConfig.query.filter_by(id=id).first()
     form = SsidForm(name=ssid.name, pass_word=ssid.pass_word, is_activated=ssid.is_activated)
@@ -130,28 +162,33 @@ def edit_ssid(id):
 
 
 @app.route("/statistics/device_statistics/")
+@login_required
 def device_statistics():
     return render_template(template_location['device_statistics'])
 
 
 @app.route("/statistics/device_detail/<int:device_id>")
+@login_required
 def device_statistic_detail(device_id):
     return render_template(template_location['device_statistic_detail'], device_id=device_id)
 
 
 @app.route("/assets/devices/ajax/")
+@login_required
 def devices_ajax():
     devices = Device.query.all()
     return jsonify(map(lambda device: device.to_json(), devices))
 
 
 @app.route("/ssids/ajax/")
+@login_required
 def ssids_ajax():
     ssids = SSidConfig.query.all()
     return jsonify(map(lambda ssid: ssid.to_json(), ssids))
 
 
 @app.route("/statistics/devices/ajax/")
+@login_required
 def device_statistics_ajax():
     devices = UsageRecord.query.all()
     result = db.session.query(UsageRecord.device_id, db.func.count(UsageRecord.id),
@@ -177,6 +214,7 @@ def device_statistics_ajax():
 
 
 @app.route("/statistic/per/device/ajax/<int:device_id>")
+@login_required
 def per_device_statistic_ajax(device_id):
     records = UsageRecord.query.filter_by(device_id=device_id).all()
     if not records:

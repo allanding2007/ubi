@@ -3,12 +3,13 @@
     Create On: 2017/03/22
 """
 from flask_sqlalchemy import SQLAlchemy
+from flask_login import UserMixin
 
 db = SQLAlchemy()
 UBI_TABLE_PREFIX = "ubiwifi_"
 
 
-class User(db.Model):
+class User(UserMixin, db.Model):
     """
     """
     __tablename__ = UBI_TABLE_PREFIX + "user"
@@ -22,6 +23,11 @@ class User(db.Model):
     
     def __repr__(self):
         return "<User {0}>".format(self.user_name)
+
+    def verify_password(self, pwd):
+        if self.pass_word == pwd:
+            return True
+        return False
 
 
 class Device(db.Model):
