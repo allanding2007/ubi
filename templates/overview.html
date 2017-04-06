@@ -17,12 +17,20 @@
 <div>
 	<div>
 		<i style="font-size:40px">Overview</i>
-		<img src="" class="img-rounded" height="180" width="150"  align="right">
 	</div>
-
 	<div>
 		<hr style="height:1px;border:none;border-top:1px solid #555555;" />
-		<i style="font-size:40px">Name</i>
 	</div>
+    <div id="id_chart" style="width:600px;height:400px;"></div>
+    <div>
+		<hr style="height:1px;border:none;border-top:1px solid #555555;" />
+	</div>
+    <div id="id_static_chart" style="width:600px;height:400px;"></div>
 </div>
 {% endblock %}
+{% block scripts %}
+{{ super() }}
+<script src="/static/js/echarts.js"></script>
+<script src="/static/js/misc/overview.js"></script>
+{% endblock %}
+
