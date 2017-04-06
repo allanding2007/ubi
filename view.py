@@ -58,7 +58,7 @@ def load_user(user_id):
 @app.route("/")
 @login_required
 def index():
-    return render_template("index.html")
+    return redirect(url_for("dashboard"))
 
 
 @app.route("/auth/login/", methods=["GET", "POST"])
@@ -90,7 +90,6 @@ def user_logout():
 def profile():
     user = current_user
     form = ProfileForm(user_name=user.user_name, email=user.email, join_date=user.join_date)
-    print form.data
     return render_template(template_location['profile'], form=form)
 
 
@@ -176,24 +175,27 @@ def device_statistic_detail(device_id):
 @app.route("/assets/devices/ajax/")
 @login_required
 def devices_ajax():
-    devices = Device.query.all()
+    devices = Device.query.filter_by(user_id=current_user.id)
     return jsonify(map(lambda device: device.to_json(), devices))
 
 
 @app.route("/ssids/ajax/")
 @login_required
 def ssids_ajax():
-    ssids = SSidConfig.query.all()
+    ssids = SSidConfig.query.filter_by(user_id=current_user.id)
     return jsonify(map(lambda ssid: ssid.to_json(), ssids))
 
 
 @app.route("/statistics/devices/ajax/")
 @login_required
 def device_statistics_ajax():
-    devices = UsageRecord.query.all()
-    result = db.session.query(UsageRecord.device_id, db.func.count(UsageRecord.id),
-                              db.func.sum(UsageRecord.data_usage)).group_by(UsageRecord.device_id).all()
+    devices = Device.query.filter_by(user_id=current_user.id).all()
+    devices_id = map(lambda d: d.id, devices)
+
     try:
+        result = db.session.query(UsageRecord.device_id, db.func.count(UsageRecord.id),
+                                  db.func.sum(UsageRecord.data_usage)).group_by(UsageRecord.device_id). \
+                                    filter(UsageRecord.device_id.in_(devices_id))
         data = {
             "data": map(lambda r: {"device_id": r[0],
                                    "count": r[1],
