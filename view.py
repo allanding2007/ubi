@@ -4,7 +4,7 @@
     Created On: 2017/03/21
 """
 from flask import Flask, render_template, make_response, redirect, url_for, flash, abort
-from flask import jsonify
+from flask import jsonify, request
 from flask_bootstrap import Bootstrap
 from flask_login import LoginManager, login_required, login_user, logout_user, current_user
 from flask_moment import Moment
@@ -55,10 +55,31 @@ def load_user(user_id):
     return get_or_404(User, int(user_id))
 
 
+@login_manager.unauthorized_handler
+def handle_need_login():
+    return redirect(url_for("user_login"))
+
+
 @app.route("/")
 @login_required
 def index():
     return redirect(url_for("dashboard"))
+
+
+@app.route("/auth/register/", methods=["GET", "POST"])
+def register():
+    form = ProfileForm()
+    if form.validate_on_submit():
+        user = User()
+        items = ["user_name", "pass_word", "email", "join_date", "is_activated"]
+        for item in items:
+            setattr(user, item, form.data[item])
+        try:
+            db.session.add(user)
+            db.session.commmit()
+        except Exception as e:
+            print "Register user error: {0}".format(e)
+    return render_template(template_location['register'], form=form)
 
 
 @app.route("/auth/login/", methods=["GET", "POST"])
@@ -89,7 +110,8 @@ def user_logout():
 @login_required
 def profile():
     user = current_user
-    form = ProfileForm(user_name=user.user_name, email=user.email, join_date=user.join_date)
+    form = ProfileForm(user_name=user.user_name, pass_word=user.pass_word, email=user.email,
+                       join_date=user.join_date)
     return render_template(template_location['profile'], form=form)
 
 
@@ -138,6 +160,7 @@ def edit_device(id):
 
 
 @app.route("/assets/device/add/", methods=["GET", "POST"])
+@login_required
 def add_device():
     form = DeviceForm()
     if form.validate_on_submit():

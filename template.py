@@ -8,6 +8,7 @@
 template_location = {
     "dashboard": "dashboard.html",
     "login": "login/login.html",
+    "register": "login/register.html",
     "devices": "assets/devices.html",
     "edit_device": "assets/edit_device.html",
     "ssid": "ssids/ssid.html",

@@ -47,6 +47,10 @@ class ProfileForm(FlaskForm):
     Description: This form is userd for user profile.
     """
     user_name = StringField("User Name:", validators=[DataRequired()])
+    pass_word = StringField("Pass Word", validators=[DataRequired()])
     email = StringField("E-mail:", validators=[DataRequired()])
     join_date = DateTimeField("Join Date:")
+    is_activated = BooleanField("Is Activated")
+    submit = SubmitField("Save")
+
 
